@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego Educativo: Símbolos Patrios de Bolivia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --primary: #d32f2f;      /* Rojo tricolor */
+      --secondary: #fbc02d;    /* Amarillo tricolor */
+      --accent: #388e3c;       /* Verde tricolor */
+      --primary-light: #ef5350;
+      --bg-gradient: linear-gradient(135deg, #ffebee 0%, #fffde7 50%, #e8f5e9 100%);
+      --card-bg: #ffffff;
+      --text-dark: #b71c1c;
+      --text-muted: #5d4037;
+      --shadow: 0 10px 25px rgba(211, 47, 47, 0.2);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #2c3e50;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 25px 30px;
+      border: 4px solid #ef9a9a;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .tricolor-bar {
+      display: flex;
+      height: 8px;
+      width: 120px;
+      margin: 0 auto 12px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .bar-red { background-color: #d32f2f; flex: 1; }
+    .bar-yellow { background-color: #fbc02d; flex: 1; }
+    .bar-green { background-color: #388e3c; flex: 1; }
+
+    h1 {
+      font-family: 'Fredoka', sans-serif;
+      color: var(--primary);
+      font-size: 2.3rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      text-shadow: 2px 2px 0px #ffebee;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    /* Tablero de Estadísticas */
+    .dashboard {
+      display: flex;
+      justify-content: space-around;
+      background: #fff8e1;
+      padding: 12px 20px;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      border: 2px dashed #ffe082;
+    }
+
+    .stat-box {
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #8d6e63;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.6rem;
+      color: var(--primary);
+    }
+
+    /* Rejilla de Cartas */
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 15px;
+      perspective: 1000px;
+    }
+
+    /* Estilos de las Cartas */
+    .card {
+      height: 145px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      border-radius: 16px;
+    }
+
+    .card:hover {
+      transform: scale(1.04);
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card.matched {
+      transform: rotateY(180deg) scale(0.95);
+      cursor: default;
+      opacity: 0.88;
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 3px solid white;
+    }
+
+    /* Reverso de la Carta */
+    .card-front {
+      background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%);
